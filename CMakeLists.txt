@@ -36,6 +36,12 @@ set(DEPENDENCY_INSTALL_DIR ${DEPENDENCY_DIR}/install)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+#find_package(lib_glog REQUIRED)
+#include_directories(SYSTEM ${GLOG_INCLUDE_DIRS})
+#list(APPEND LINKER_LIBS ${GLOG_LIBRARIES})
+
+set(GLOG_LIBRARY glog)
+
 if(BUILD_DBoW2)
   set(LIB_SHARED "SHARED")
   if(WIN32)
@@ -49,8 +55,11 @@ endif(BUILD_DBoW2)
 if(BUILD_Demo)
   add_executable(demo demo/demo.cpp)
   target_link_libraries(demo ${PROJECT_NAME} ${OpenCV_LIBS})
-  file(COPY demo/images DESTINATION ${CMAKE_BINARY_DIR}/)
+  #file(COPY demo/images DESTINATION ${CMAKE_BINARY_DIR}/)
 endif(BUILD_Demo)
+
+add_executable(trainVoc demo/trainVoc.cpp)
+target_link_libraries(trainVoc ${PROJECT_NAME} ${OpenCV_LIBS} ${GLOG_LIBRARY})
 
 configure_file(src/DBoW2.cmake.in
   "${PROJECT_BINARY_DIR}/DBoW2Config.cmake" @ONLY)

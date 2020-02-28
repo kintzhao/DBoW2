@@ -1,3 +1,26 @@
+----------------
+
+Test  with 5 params
+
+```
+run  in_img_path  out_path  branch_num level_num  voc_name
+```
+
+
+
+```shell
+yhzhao@yhzhao:~/ORBSLAM-ws/src/DBoW2$ ./train  /home/yhzhao/ORBSLAM-ws/src/DBoW2/demo/images /home/yhzhao/ORBSLAM-ws/src/DBoW2/demo/images 6 10  test
+---------------- 
+output:
+----------------
+test_voc.yml.gz
+test_voc.yml.gz
+```
+
+
+
+---------------------------
+
 DBoW2
 =====
 
@@ -57,7 +80,7 @@ DBoW2 has two main classes: `TemplatedVocabulary` and `TemplatedDatabase`. These
     {
       ...
     };
-
+    
     template<class TDescriptor, class F>
     class TemplatedDatabase
     {
