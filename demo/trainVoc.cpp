@@ -132,7 +132,7 @@ std::string VocTrain::creatVoc(const int branchs, const int levels, const std::s
     // branching factor and depth levels
     OrbVocabulary voc(branchs, levels, weight, score);
 
-    LOG(INFO) << "Creating a small " << levels << "^" << levels << " vocabulary..." ;
+    LOG(INFO) << "Creating a small " << branchs << "^" << levels << " vocabulary..." ;
     voc.create(features_);
     LOG(INFO) << " Finish voc!"  ;
 
