@@ -9,7 +9,7 @@ run  in_img_path  out_path  branch_num level_num  voc_name
 
 
 ```shell
-yhzhao@yhzhao:~/ORBSLAM-ws/src/DBoW2$ ./train  /home/yhzhao/ORBSLAM-ws/src/DBoW2/demo/images /home/yhzhao/ORBSLAM-ws/src/DBoW2/demo/images 6 10  test
+yhzhao@yhzhao:~/ORBSLAM-ws/src/DBoW2/build$ ./trainVoc  /home/yhzhao/dataSets/vslam/zhenbei/total/image/   /home/yhzhao/dataSets/vslam/zhenbei/total/voc  6 10 zhenbei_F1
 ---------------- 
 output:
 ----------------

@@ -40,7 +40,7 @@ VocTrain::VocTrain(const std::string&  img_dir, const std::string&  out_dir):img
     loadImgList();
     LOG(INFO)<<"Get image size: "<<image_lists_.size();
     loadFeatures();
-    LOG(INFO)<<"Get image size: "<<features_.size();
+    LOG(INFO)<<"Get features_ size: "<<features_.size();
 }
 
 int VocTrain::loadImgList()
@@ -83,7 +83,7 @@ int VocTrain::loadImgList()
 
         if (suffixStr.compare("png") == 0 || suffixStr.compare("jpeg") == 0 || suffixStr.compare("bmp") == 0 )
         {
-            std::string img_path = img_dir_+filename->d_name;
+            std::string img_path = img_dir_+"/"+filename->d_name;
             image_lists_.push_back(img_path);
             LOG(INFO)<<"map_info_name: "<<img_path<<std::endl;
             ++number;
@@ -102,7 +102,7 @@ int VocTrain::loadFeatures()
     cv::Ptr<cv::ORB> orb = cv::ORB::create();
 
     LOG(INFO) << "Extracting ORB features...";
-    for(int i = 0; i < image_lists_.size(); ++i)
+    for(unsigned int i = 0; i < image_lists_.size(); ++i)
     {
       cv::Mat image = cv::imread(image_lists_[i], 0);
       cv::Mat mask;
@@ -114,6 +114,7 @@ int VocTrain::loadFeatures()
       features_.push_back(vector<cv::Mat >());
       changeStructure(descriptors, features_.back());
     }
+    return  features_.size();
 }
 
 void VocTrain::changeStructure(const cv::Mat &plain, vector<cv::Mat> &out)
@@ -141,11 +142,11 @@ std::string VocTrain::creatVoc(const int branchs, const int levels, const std::s
     // lets do something with this vocabulary
     LOG(INFO) << "Matching images against themselves (0 low, 1 high): " << endl;
     BowVector v1, v2;
-    int test_num = 4 > features_.size()? features_.size() : 4;
-    for(int i = 0; i < test_num; i++)
+    unsigned int  test_num = 4 > features_.size()? features_.size() : 4;
+    for(unsigned int  i = 0; i < test_num; i++)
     {
       voc.transform(features_[i], v1);
-      for(int j = 0; j < test_num; j++)
+      for(unsigned int  j = 0; j < test_num; j++)
       {
         voc.transform(features_[j], v2);
 
@@ -175,7 +176,7 @@ void VocTrain::creatDatabase(const std::string& in_voc_path, const std::string& 
     // db creates a copy of the vocabulary, we may get rid of "voc" now
 
     // add images to the database
-    for(int i = 0; i < features_.size(); i++)
+    for(unsigned int i = 0; i < features_.size(); i++)
     {
       db.add(features_[i]);
     }
@@ -187,8 +188,8 @@ void VocTrain::creatDatabase(const std::string& in_voc_path, const std::string& 
     LOG(INFO) << "Querying the database: " << endl;
 
     QueryResults ret;
-    int test_num = 4 > features_.size()? features_.size() : 4;
-    for(int i = 0; i < test_num; i++)
+    unsigned int  test_num = 4 > features_.size()? features_.size() : 4;
+    for(unsigned int i = 0; i < test_num; i++)
     {
       db.query(features_[i], ret, 4);
 
