@@ -742,6 +742,12 @@ void TemplatedVocabulary<TDescriptor,F>::HKmeansStep(NodeId parent_id,
         
         for(unsigned int c = 1; c < clusters.size(); ++c)
         {
+          if(clusters[c].empty())
+          {
+            LOG(INFO)<<c<<" last:"<<clusters[c-1];
+            continue;
+          }
+
           double dist = F::distance(*(*fit), clusters[c]);
           if(dist < best_dist)
           {
@@ -796,6 +802,7 @@ void TemplatedVocabulary<TDescriptor,F>::HKmeansStep(NodeId parent_id,
     m_nodes.back().descriptor = clusters[i];
     m_nodes.back().parent = parent_id;
     m_nodes[parent_id].children.push_back(id);
+    LOG(INFO)<<"Add Node"<<" id: "<<id<<"parent:"<<parent_id<<" descriptor: "<<clusters[i];
   }
   
   // go on with the next level
