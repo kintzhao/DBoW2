@@ -22,6 +22,7 @@
 #include "FeatureVector.h"
 #include "BowVector.h"
 #include "ScoringObject.h"
+#include <glog/logging.h>
 
 namespace DBoW2 {
 
@@ -565,10 +566,11 @@ void TemplatedVocabulary<TDescriptor,F>::create(
 
   m_nodes.reserve(expected_nodes); // avoid allocations when creating the tree
   
+  LOG(INFO)<<"expected_nodes size: "<<expected_nodes;
   
   std::vector<pDescriptor> features;
   getFeatures(training_features, features);
-
+  LOG(INFO)<<"Total features size: "<<features.size();
 
   // create root  
   m_nodes.push_back(Node(0)); // root
@@ -684,6 +686,12 @@ void TemplatedVocabulary<TDescriptor,F>::HKmeansStep(NodeId parent_id,
 			{
         // random sample 
         initiateClusters(descriptors, clusters);
+        LOG(INFO)<<"initiateClusters "<<current_level;
+        for (size_t i = 0; i < clusters.size(); i++)
+        {
+          LOG(INFO)<<"cluster L:"<<current_level<<" : "<<i<<"/"<<clusters.size()<<clusters[i];
+        }
+        
       }
       else
       {
@@ -810,6 +818,7 @@ void TemplatedVocabulary<TDescriptor,F>::HKmeansStep(NodeId parent_id,
 
       if(child_features.size() > 1)
       {
+        LOG(INFO)<<"RUN next HKmeansStep"<<" id: "<<id<<" size:"<<child_features.size()<<" L: "<<current_level + 1;
         HKmeansStep(id, child_features, current_level + 1);
       }
     }
@@ -892,7 +901,7 @@ void TemplatedVocabulary<TDescriptor,F>::initiateClustersKMpp(
       for(dit = min_dists.begin(); dit != min_dists.end(); ++dit)
       {
         d_up_now += *dit;
-        if(d_up_now >= cut_d) break;
+        if(d_up_now >= cut_d && *dit > 0) break;
       }
       
       if(dit == min_dists.end()) 
