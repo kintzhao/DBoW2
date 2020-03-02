@@ -80,11 +80,15 @@ double FORB::distance(const FORB::TDescriptor &a,
   // Bit count function got from:
   // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
   // This implementation assumes that a.cols (CV_8U) % sizeof(uint64_t) == 0
-  
+  if(a.empty() || b.empty())
+  {
+      return DBL_MAX;
+  }
+
   const uint64_t *pa, *pb;
   pa = a.ptr<uint64_t>(); // a & b are actually CV_8U
   pb = b.ptr<uint64_t>(); 
-  
+
   uint64_t v, ret = 0;
   for(size_t i = 0; i < a.cols / sizeof(uint64_t); ++i, ++pa, ++pb)
   {

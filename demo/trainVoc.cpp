@@ -83,7 +83,7 @@ int VocTrain::loadImgList()
 
         if (suffixStr.compare("png") == 0 || suffixStr.compare("jpeg") == 0 || suffixStr.compare("bmp") == 0 )
         {
-            std::string img_path = img_dir_+"/"+filename->d_name;
+            std::string img_path = img_dir_+filename->d_name;
             image_lists_.push_back(img_path);
             LOG(INFO)<<"map_info_name: "<<img_path<<std::endl;
             ++number;
@@ -104,6 +104,7 @@ int VocTrain::loadFeatures()
     LOG(INFO) << "Extracting ORB features...";
     for(unsigned int i = 0; i < image_lists_.size(); ++i)
     {
+      LOG(INFO)<<"Get features_ "<<i<<"/"<<image_lists_.size();
       cv::Mat image = cv::imread(image_lists_[i], 0);
       cv::Mat mask;
       vector<cv::KeyPoint> keypoints;
