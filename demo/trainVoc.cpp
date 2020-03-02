@@ -15,6 +15,7 @@
 
 using namespace DBoW2;
 using namespace std;
+const int kSplitNum = 2;//10;
 
 class VocTrain
 {
@@ -83,9 +84,12 @@ int VocTrain::loadImgList()
 
         if (suffixStr.compare("png") == 0 || suffixStr.compare("jpeg") == 0 || suffixStr.compare("bmp") == 0 )
         {
-            std::string img_path = img_dir_+filename->d_name;
-            image_lists_.push_back(img_path);
-            LOG(INFO)<<"map_info_name: "<<img_path<<std::endl;
+	    if(number % kSplitNum == 0)
+	    {
+            	std::string img_path = img_dir_+filename->d_name;
+            	image_lists_.push_back(img_path);
+            	LOG(INFO)<<"map_info_name: "<<img_path<<std::endl;
+	    }
             ++number;
         }
 
@@ -160,6 +164,11 @@ std::string VocTrain::creatVoc(const int branchs, const int levels, const std::s
     LOG(INFO) << "Saving vocabulary..." << endl;
     std::string save_path = out_dir_+"/"+voc_path+"_voc.yml.gz";
     voc.save(save_path);
+    LOG(INFO) << "Saving vocabulary: " <<save_path<< endl;
+    std::string save_txt_path = out_dir_+"/"+voc_path+"_voc.txt";
+    voc.saveToTextFile(save_txt_path);
+    LOG(INFO) << "Saving vocabulary: " <<save_txt_path<< endl;
+
     LOG(INFO) << "voc.save Done !";
     return save_path;
 }
